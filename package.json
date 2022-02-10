@@ -2,7 +2,7 @@
   "name": "opsician",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://opsician.github.io/anonroyale",
+  "homepage": "https://opsician.github.io/token-royale",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
