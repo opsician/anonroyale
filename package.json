@@ -1,7 +1,6 @@
 {
     "name": "token-royale",
     "version": "3.0.1",
-    "private": true,
     "homepage": "http://opsician.github.io/token-royale",
     "dependencies": {
         "@emotion/cache": "^11.4.0",
