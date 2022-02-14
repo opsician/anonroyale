@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -35,6 +36,8 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Google from 'assets/images/icons/social-google.svg';
 
+import * as fsc from 'utils/freighter-stellar';
+
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const FirebaseLogin = ({ ...others }) => {
@@ -43,9 +46,20 @@ const FirebaseLogin = ({ ...others }) => {
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const customization = useSelector((state) => state.customization);
     const [checked, setChecked] = useState(true);
+    const navigate = useNavigate();
 
-    const googleHandler = async () => {
-        console.error('Login');
+    const freighterHandler = async () => {
+        const funcAddresses = ['9d64bd82134a1c141501dc16dca992446ecdc1812c1d75e8aab53443f879bf87'];
+        const network = await fsc.retrieveNetwork();
+        const pk = await fsc.retrievePublicKey();
+        const xdrToken = await fsc.generateXDRToken(funcAddresses, pk);
+        if (pk && network) {
+            window.localStorage.setItem("userPublicKey", pk);
+            if (xdrToken) {
+                window.localStorage.setItem("xdrToken", xdrToken);
+            }
+            navigate("/token-royale");
+        }
     };
 
     const [showPassword, setShowPassword] = useState(false);
@@ -65,7 +79,7 @@ const FirebaseLogin = ({ ...others }) => {
                         <Button
                             disableElevation
                             fullWidth
-                            onClick={googleHandler}
+                            onClick={freighterHandler}
                             size="large"
                             variant="outlined"
                             sx={{
@@ -77,7 +91,7 @@ const FirebaseLogin = ({ ...others }) => {
                             <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
                                 <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
                             </Box>
-                            Sign in with Google
+                            Sign in with Freighter
                         </Button>
                     </AnimateButton>
                 </Grid>
