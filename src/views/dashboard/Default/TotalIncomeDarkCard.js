@@ -9,7 +9,8 @@ import MainCard from 'ui-component/cards/MainCard';
 import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
-import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+// import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
+import FlagIcon from '@mui/icons-material/Flag';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -63,7 +64,7 @@ const TotalIncomeDarkCard = ({ isLoading, flagsCaptured }) => {
                                             color: '#fff'
                                         }}
                                     >
-                                        <TableChartOutlinedIcon fontSize="inherit" />
+                                        <FlagIcon fontSize="inherit" />
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText

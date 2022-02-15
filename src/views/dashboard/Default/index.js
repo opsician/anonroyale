@@ -6,6 +6,7 @@ import { Grid } from '@mui/material';
 // project imports
 import EarningCard from './EarningCard';
 import PopularCard from './PopularCard';
+import FlagHoldersCard from './FlagHoldersCard';
 import TotalOrderLineChartCard from './TotalOrderLineChartCard';
 import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
@@ -30,14 +31,24 @@ const Dashboard = () => {
         const getData = async () => {
             const pk = localStorage.getItem("userPublicKey");
             const xdrToken = localStorage.getItem("xdrToken");
-            const assets = await fsc.getAssets(pk);
-            const funcBalance = await fsc.getFuncBalance(xdrToken, funcBaseUrl);
+            var assets, funcBalance;
+            if (pk && xdrToken) {
+                assets = await fsc.getAssets(pk);
+                funcBalance = await fsc.getFuncBalance(xdrToken, funcBaseUrl);
+            }
+            else {
+                assets = [];
+                funcBalance = '';
+            }
+            assets.forEach((item, i) => {
+                item.id = (i + 1).toString();
+            });
+
             return { pk, assets, xdrToken, funcBalance };
         };
         getData()
             .then((res) => {
                 if (res.pk) {
-                    console.log(res);
                     setAccount(res.pk);
                     setAssets(res.assets);
                     setXDRToken(res.xdrToken);
@@ -65,7 +76,16 @@ const Dashboard = () => {
                                 <TotalIncomeDarkCard isLoading={isLoading} flagsCaptured={flagsCaptured} />
                             </Grid>
                             <Grid item sm={6} xs={12} md={6} lg={12}>
-                                <TotalIncomeLightCard isLoading={isLoading} funcBalance={funcBalance} />
+                                <TotalIncomeLightCard 
+                                    isLoading={isLoading} 
+                                    funcBalance={funcBalance} 
+                                    funcBaseUrl={funcBaseUrl}
+                                    turretPublicKey={turretPublicKey}
+                                    account={account}
+                                    xdrToken={xdrToken}
+                                    setAssets={setAssets}
+                                    setFuncBalance={setFuncBalance}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -74,11 +94,11 @@ const Dashboard = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} md={6}>
-                        <PopularCard isLoading={isLoading} />
+                        <PopularCard isLoading={isLoading} assets={assets}/>
                         {/* <TotalGrowthBarChart isLoading={isLoading} /> */}
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <PopularCard isLoading={isLoading} />
+                        <FlagHoldersCard isLoading={isLoading} />
                     </Grid>
                 </Grid>
             </Grid>
